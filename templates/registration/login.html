@@ -1,0 +1,9 @@
+
+<h1>Login</h1>
+<!--use a form, enctype:用什么format进行压缩 -->
+<!--post把信息发给后端-->
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}  <!--django自带的保护措施-->
+    {{ form.as_p }} 
+    <button type="submit">Login</button>
+</form>
