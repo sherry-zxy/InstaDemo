@@ -5,10 +5,11 @@
 {% block content %} 
 
 <h1>New Post</h1>
-<!--use a form, enctype:用什么format进行压缩e -->
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}  <!--django自带的保护措施-->
-    {{ form.as_p }} 
+<!--use a form, enctype:用什么format对data进行压缩然后再上传，为了speed-->
+<form action="" method="post" enctype="multipart/form-data"> <!--request method: post上传/get获得-->
+    {% csrf_token %}  <!--{%:是template的语言，django自带的保护form的措施 都需要添加-->
+    {{ form.as_p }}  <!-- 用django中的变量, view传递object的变量-->
     <button type="submit">Save</button>
 </form>
+
 {% endblock content %}

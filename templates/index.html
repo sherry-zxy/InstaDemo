@@ -1,18 +1,93 @@
 
+{% extends "base.html" %}
 
-{% extends 'base.html' %} <!--get base.html-->
+{% load custom_tags %}
+
+{% block content %}
+
+<div class="cards-listing">
+    {% for post in object_list %}
+        <div class="row"> <!--每个post都有自己的一行-->
+            <div class="card view-update {{ post.pk }}">
+            <!--显示哪个user发的posts-->
+             <div class="card__panel-head">
+                    <div class="poster__info"> 
+                        <a href="{% url 'user_detail' post.author.id  %}" class="poster__name">
+                            {% if post.author.profile_pic %}
+                                <img class="poster__profilepic" src="/{{ post.author.profile_pic.url }}">
+                            {% endif %}
+                            {{ post.author.username }}
+                        </a>
+                        {% comment %} <span class="poster__timestamp">
+                            {{ post.posted_on|timesince }}
+                        </span> {% endcomment %}
+                    </div> 
+                </div>
 
 
-{% block content %} 
+                <a href="{% url 'post_detail' post.pk %}">
+                    <img class="card__main-image" src="/{{ post.image}}">
+                </a>
+                
+                 <div class="card__panel-body">
+                    <div class="likes">
+                        {% if post.get_like_count %}
+                            {{ post.get_like_count }} like{% if post.get_like_count > 1 %}s{% endif %}
+                        {% endif %}
+                    </div>
+                    <section class = "input-row">
+                         {% comment %} <i class="fa fa-heart-o submit-like" aria-hidden="true"> </i> {% endcomment %}
+                         <i class="fa {% has_user_liked_post post user %} submit-like" aria-hidden="true"></i>
+                         <!--div is i的sibling 不会显示在页面上只是用来保存信息的 -->
+                         <div class="hidden-data {{ post.pk }}" style="display: none;">
+                            <span class="post-pk">{{ post.pk }}</span>
+                        </div>
+
+                    </section>
+                    {% comment %} <ul class="comment-list">
+                        <a class="view-more"></a>
+                        {% for comment in post.comments.all %}
+                        <li class="comment-list__comment">
+                            <a href="{% url 'profile' comment.user.pk %}" class="user">
+                                {{ comment.user.username }}
+                            </a>
+                            <span class="comment">{{ comment.comment }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <section class="input-row">
+                        <i class="fa {% has_user_liked_post post user %} submit-like" aria-hidden="true"></i>
+                        <div class="comment-input-wrapper">
+                            <input class="add-comment" type="text" placeholder="Add a comment...">
+                        </div>
+                        <div class="hidden-data {{ post.pk }}" style="display: none;">
+                            <span class="post-pk">{{ post.pk }}</span>
+                        </div>
+                    </section> {% endcomment %}
+                </div> 
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
+
+
+
+
+{% comment %} <!--{% extends 'base.html' %} get base.html-->
+
+
+{% block content %}  
 
 <div>
     <a href="{% url 'make_post' %}">Make Post</a>
 </div>
 <div>
-    {% for post in object_list %}
-        <a href="{% url 'post_detail' post.id%}">
-            <img src="/{{post.image}}">
+    {% for post in object_list %}    !-- object_lists是view里面model作为list传过来-->
+       <a href="{% url 'post_detail' post.id%}">   !-- post_detail 是一个url的简写/别名在urls.py中 点击图片后会跳转-->
+         <!--   <img src="/{{post.image}}"> <!把path加在localhost url下而不是当前的路径下-->
         </a>
-    {% endfor %}
+   <!-- {% endfor %}
 </div>
-{% endblock content %}
+{% endblock content %} {% endcomment %}

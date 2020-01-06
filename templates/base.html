@@ -1,9 +1,11 @@
 <html>
     <head>
         {% load static %}
-        <meta charset="utf-8">
+        <meta charset="utf-8"> <!--编码方式-->
+        <!--在手机上看是怎么看，1：1大小-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Insta Demo</title>
+        <!--link style sheet-->
         <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
         <link href="{% static 'vendor/font-awesome-4.6.3/css/font-awesome.min.css' %}" rel="stylesheet">
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
@@ -11,10 +13,21 @@
     <body>
         {% include 'header.html' %}
         
-       
-                {% block content %} <!--content of base.html-->
+         <div class="content-wrapper">
+            <div class="container">
+                {% block content %} <!--blcok变量content 去找页面中的content -->
                 {% endblock content%}
-         
+            </div>
+        </div>
+        <!---->
+        <script type="text/javascript" src="{% static 'js/jquery-3.1.0.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/ajax-csrf-auth.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+
+        {% block extrascript %}
+        {% endblock %}
+
 
     </body>
 </html>

@@ -4,6 +4,12 @@
 <!--post把信息发给后端-->
 <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}  <!--django自带的保护措施-->
-    {{ form.as_p }} 
+    {{ form.as_p }} <!--在form中哪些field，把这些field当做paragraph显示出来-->
     <button type="submit">Login</button>
+    
+    
+<div>
+    <a href="{% url 'signup' %}">Sign Up</a>
+</div>
 </form>
+<!--login后跳转到哪里 在setting中定义-->
