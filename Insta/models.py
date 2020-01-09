@@ -27,7 +27,7 @@ class InstaUser(AbstractUser):
         return followers.filter(creator=user).exists()
 
     def get_absolute_url(self):
-        return reverse('profile', args=[str(self.id)])
+        return reverse('user_detail', args=[str(self.id)])
 
 #记录了关系的model
 # A(createor) follows B(following)
@@ -72,6 +72,9 @@ class Post(models.Model):
     #post1.likes ->(like1, like2)
     def get_like_count(self):
         return self.likes.count()
+  
+    def get_comment_count(self):
+        return self.comments.count()
     
 #get_absolute_url作用, 当有人create新的post，就调用这个 reverse: 调用post_detail名字 reverse成一个url 在url.py中去找这个名字'
 #post_detail -> www.xxx->page(template)'
@@ -110,12 +113,12 @@ class Comment(models.Model):
     post = models.ForeignKey(
         Post,
         on_delete = models.CASCADE,
-        related_name ='comment'
+        related_name ='comments'
     )
     user = models.ForeignKey(
         InstaUser,
         on_delete = models.CASCADE,
-        related_name= 'comment'
+    
     )
     comment = models.CharField(max_length=100)
     post_one = models.DateTimeField(auto_now_add=True, editable=False)
