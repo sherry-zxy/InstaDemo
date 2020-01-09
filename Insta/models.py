@@ -51,36 +51,69 @@ class UserConnection(models.Model):
         return self.creator.username + ' follows ' + self.following.username
 
 class Post(models.Model):
-    author = models.ForeignKey(
-        InstaUser,
+    author = models.ForeignKey( # a foreign key indicate a Many-To-One relationship
+        InstaUser, #foreign key is InstaUser
         blank=True,
         null=True,
-        on_delete = models.CASCADE,
-        related_name='my_posts'
-        
-    )
-    """没有title也能发，没有title这个field也能用"""
-    title = models.TextField(blank=True, null=True) 
-    image = ProcessedImageField(
-        upload_to = 'static/images/posts',
-        format = 'JPEG',
-        options = {'quality':100},
-        blank = True,
-        null =True
+        on_delete=models.CASCADE, # delete this author will delete all his posts
+        related_name='posts', # we can use author.posts to get all posts belong to this user
         )
-    #用当前post的object.likes.count获得所有这个post的赞
-    #post1.likes ->(like1, like2)
+    title = models.TextField(blank=True, null=True)
+    image = ProcessedImageField(
+        upload_to='static/images/posts',
+        format='JPEG',
+        options={'quality': 100},
+        blank=True,
+        null=True,
+        )
+    posted_on = models.DateTimeField(
+        auto_now_add=True,
+        editable=False,
+    )
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("post_detail", args=[str(self.id)])
+
     def get_like_count(self):
         return self.likes.count()
-  
+
     def get_comment_count(self):
         return self.comments.count()
+
+# class Post(models.Model):
+#     author = models.ForeignKey(
+#         InstaUser,
+#         blank=True,
+#         null=True,
+#         on_delete = models.CASCADE,
+#         related_name='my_posts'
+        
+#     )
+#     """没有title也能发，没有title这个field也能用"""
+#     title = models.TextField(blank=True, null=True) 
+#     image = ProcessedImageField(
+#         upload_to = 'static/images/posts',
+#         format = 'JPEG',
+#         options = {'quality':100},
+#         blank = True,
+#         null =True
+#         )
+#     #用当前post的object.likes.count获得所有这个post的赞
+#     #post1.likes ->(like1, like2)
+#     def get_like_count(self):
+#         return self.likes.count()
+  
+#     def get_comment_count(self):
+#         return self.comments.count()
     
-#get_absolute_url作用, 当有人create新的post，就调用这个 reverse: 调用post_detail名字 reverse成一个url 在url.py中去找这个名字'
-#post_detail -> www.xxx->page(template)'
-#class的object 去调用这个 比如post1, post2'
-    def get_absolute_url(self):
-        return reverse("post_detail", args= [str(self.id)])
+# #get_absolute_url作用, 当有人create新的post，就调用这个 reverse: 调用post_detail名字 reverse成一个url 在url.py中去找这个名字'
+# #post_detail -> www.xxx->page(template)'
+# #class的object 去调用这个 比如post1, post2'
+#     def get_absolute_url(self):
+#         return reverse("post_detail", args= [str(self.id)])
 
 #哪个用户喜欢哪个post，like是关系型model,连接了instaUser和post的关系
 class Like(models.Model):
@@ -117,11 +150,11 @@ class Comment(models.Model):
     )
     user = models.ForeignKey(
         InstaUser,
-        on_delete = models.CASCADE,
+        on_delete = models.CASCADE
     
     )
     comment = models.CharField(max_length=100)
-    post_one = models.DateTimeField(auto_now_add=True, editable=False)
+    post_on = models.DateTimeField(auto_now_add=True, editable=False)
 
     def __str__(self):
         return self.comment
