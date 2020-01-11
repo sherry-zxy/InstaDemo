@@ -26,7 +26,7 @@ SECRET_KEY = '9)zv5t8p#l=zxf^w3a-!cgz&2*5)^8gopb%5!pn7g6px@%+22x'
 DEBUG = True
 
 #all host can visit
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [*]
 
 
 # Application definition
@@ -121,7 +121,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
- STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
@@ -133,7 +133,7 @@ LOGOUT_REDIRECT_URL = 'posts'
 
 AUTH_USER_MODEL = 'Insta.InstaUser'
 
- STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
