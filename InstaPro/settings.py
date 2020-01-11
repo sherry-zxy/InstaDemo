@@ -26,7 +26,7 @@ SECRET_KEY = '9)zv5t8p#l=zxf^w3a-!cgz&2*5)^8gopb%5!pn7g6px@%+22x'
 DEBUG = True
 
 #all host can visit
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
